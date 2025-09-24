@@ -16,6 +16,10 @@ A Microsoft Entra ID Conditional Access policy visualization and analysis tool b
 - Microsoft Entra ID tenant with appropriate permissions
 - App Registration in Microsoft Entra ID
 
+## Live Demo
+
+🚀 **Live Application:** https://conditional-access-analyzer-1zckaor8d-dareogunewus-projects.vercel.app
+
 ## Setup
 
 ### 1. Clone and Install Dependencies
@@ -107,6 +111,23 @@ src/
 3. Make your changes
 4. Test thoroughly
 5. Submit a pull request
+
+## Deployment
+
+This project is deployed on Vercel. To deploy your own instance:
+
+1. Fork this repository
+2. Connect your GitHub account to Vercel
+3. Import the project in Vercel dashboard
+4. Configure environment variables in Vercel:
+   - `NEXT_PUBLIC_AZURE_CLIENT_ID`
+   - `NEXT_PUBLIC_REDIRECT_URI` (use your Vercel domain)
+5. Deploy!
+
+Alternatively, use the Vercel CLI:
+```bash
+vercel --prod
+```
 
 ## License
 
