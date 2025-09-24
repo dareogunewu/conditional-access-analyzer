@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { useConditionalAccess } from '../hooks/useConditionalAccess';
-import LoginButton from '../components/LoginButton';
+import LandingPage from '../components/LandingPage';
 import PolicyCard from '../components/PolicyCard';
 import PolicyAnalytics from '../components/PolicyAnalytics';
 import PolicyReports from '../components/PolicyReports';
@@ -23,19 +23,7 @@ export default function Home() {
   };
 
   if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Conditional Access Analyzer
-          </h1>
-          <p className="text-gray-600 mb-6">
-            Analyze and manage your Microsoft Entra ID Conditional Access policies
-          </p>
-          <LoginButton />
-        </div>
-      </div>
-    );
+    return <LandingPage />;
   }
 
   return (
