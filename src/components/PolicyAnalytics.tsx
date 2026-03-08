@@ -70,33 +70,29 @@ const PolicyAnalytics: React.FC<PolicyAnalyticsProps> = ({ policies }) => {
       title: 'Total Policies',
       value: analysis.totalPolicies,
       icon: Shield,
-      color: 'bg-blue-500',
-      textColor: 'text-blue-600 dark:text-blue-400',
-      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
+      gradient: 'card-gradient-blue',
+      glow: 'glow-blue',
     },
     {
       title: 'Enabled',
       value: analysis.enabledPolicies,
       icon: ShieldCheck,
-      color: 'bg-green-500',
-      textColor: 'text-green-600 dark:text-green-400',
-      bgColor: 'bg-green-50 dark:bg-green-900/20',
+      gradient: 'card-gradient-green',
+      glow: 'glow-green',
     },
     {
       title: 'Report Only',
       value: analysis.reportOnlyPolicies,
       icon: ShieldAlert,
-      color: 'bg-amber-500',
-      textColor: 'text-amber-600 dark:text-amber-400',
-      bgColor: 'bg-amber-50 dark:bg-amber-900/20',
+      gradient: 'card-gradient-orange',
+      glow: 'glow-purple',
     },
     {
       title: 'Disabled',
       value: analysis.disabledPolicies,
       icon: ShieldX,
-      color: 'bg-red-500',
-      textColor: 'text-red-600 dark:text-red-400',
-      bgColor: 'bg-red-50 dark:bg-red-900/20',
+      gradient: 'card-gradient-pink',
+      glow: 'glow-pink',
     },
   ];
 
@@ -117,7 +113,9 @@ const PolicyAnalytics: React.FC<PolicyAnalyticsProps> = ({ policies }) => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Policy Analytics</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Policy <span className="gradient-text">Analytics</span>
+          </h2>
           <p className="text-gray-500 dark:text-gray-400">
             Overview of your Conditional Access policies
           </p>
@@ -126,21 +124,24 @@ const PolicyAnalytics: React.FC<PolicyAnalyticsProps> = ({ policies }) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => (
-          <Card key={index} className={stat.bgColor} padding="md">
-            <div className="flex items-center gap-4">
-              <div className={`p-3 rounded-xl ${stat.color}`}>
+          <div
+            key={index}
+            className={`stat-card ${stat.gradient} ${stat.glow} card-hover`}
+          >
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="p-3 rounded-xl bg-white/20">
                 <stat.icon className="h-6 w-6 text-white" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                <p className="text-sm font-medium text-white/80">
                   {stat.title}
                 </p>
-                <p className={`text-2xl font-bold ${stat.textColor}`}>
+                <p className="text-3xl font-bold text-white">
                   {stat.value}
                 </p>
               </div>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
 
@@ -237,9 +238,9 @@ const PolicyAnalytics: React.FC<PolicyAnalyticsProps> = ({ policies }) => {
             </p>
             <div className="grid grid-cols-3 gap-2">
               {securityMetrics.map((metric, index) => (
-                <div key={index} className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <metric.icon className="h-4 w-4 mx-auto mb-1 text-gray-400" />
-                  <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                <div key={index} className="text-center p-3 bg-gradient-to-br from-purple-500/10 to-pink-500/10 dark:from-purple-500/20 dark:to-pink-500/20 rounded-lg border border-purple-200 dark:border-purple-500/30">
+                  <metric.icon className="h-4 w-4 mx-auto mb-1 text-purple-500" />
+                  <p className="text-lg font-semibold gradient-text">
                     {metric.value}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">{metric.label}</p>
@@ -256,22 +257,31 @@ const PolicyAnalytics: React.FC<PolicyAnalyticsProps> = ({ policies }) => {
         </CardHeader>
         <CardContent className="mt-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {conditionMetrics.map((metric, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl"
-              >
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                  <metric.icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            {conditionMetrics.map((metric, index) => {
+              const colors = [
+                { bg: 'from-cyan-500/10 to-blue-500/10', border: 'border-cyan-200 dark:border-cyan-500/30', icon: 'text-cyan-500', text: 'gradient-text-blue' },
+                { bg: 'from-purple-500/10 to-pink-500/10', border: 'border-purple-200 dark:border-purple-500/30', icon: 'text-purple-500', text: 'gradient-text' },
+                { bg: 'from-emerald-500/10 to-teal-500/10', border: 'border-emerald-200 dark:border-emerald-500/30', icon: 'text-emerald-500', text: 'gradient-text-green' },
+                { bg: 'from-orange-500/10 to-amber-500/10', border: 'border-orange-200 dark:border-orange-500/30', icon: 'text-orange-500', text: 'gradient-text' },
+              ];
+              const color = colors[index % colors.length];
+              return (
+                <div
+                  key={index}
+                  className={`flex items-center gap-3 p-4 bg-gradient-to-br ${color.bg} dark:${color.bg.replace('/10', '/20')} rounded-xl border ${color.border} card-hover`}
+                >
+                  <div className="p-2 bg-white/50 dark:bg-gray-800/50 rounded-lg">
+                    <metric.icon className={`h-5 w-5 ${color.icon}`} />
+                  </div>
+                  <div>
+                    <p className={`text-xl font-bold ${color.text}`}>
+                      {metric.value}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{metric.label}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    {metric.value}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{metric.label}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </CardContent>
       </Card>

@@ -22,48 +22,48 @@ const LandingPage: React.FC = () => {
       description:
         'View all your Conditional Access policies in an intuitive, card-based interface with clear status indicators and condition summaries.',
       icon: BarChart3,
-      color: 'text-blue-600 dark:text-blue-400',
-      bgColor: 'bg-blue-100 dark:bg-blue-900/30',
+      gradient: 'card-gradient-blue',
+      glow: 'glow-blue',
     },
     {
       title: 'Security Analytics',
       description:
         'Get insights into policy distribution, identify security gaps, and understand your organization\'s access control posture.',
       icon: Shield,
-      color: 'text-green-600 dark:text-green-400',
-      bgColor: 'bg-green-100 dark:bg-green-900/30',
+      gradient: 'card-gradient-green',
+      glow: 'glow-green',
     },
     {
       title: 'Policy Analysis',
       description:
         'Analyze policy effectiveness, detect orphaned policies, and identify potential security risks across your environment.',
       icon: Search,
-      color: 'text-purple-600 dark:text-purple-400',
-      bgColor: 'bg-purple-100 dark:bg-purple-900/30',
+      gradient: 'card-gradient-purple',
+      glow: 'glow-purple',
     },
     {
       title: 'Reporting & Export',
       description:
         'Generate comprehensive security reports and export policy data to CSV for further analysis and compliance reporting.',
       icon: FileText,
-      color: 'text-amber-600 dark:text-amber-400',
-      bgColor: 'bg-amber-100 dark:bg-amber-900/30',
+      gradient: 'card-gradient-orange',
+      glow: 'glow-purple',
     },
     {
       title: 'Real-time Data',
       description:
         'Direct integration with Microsoft Graph API ensures you\'re always working with the most up-to-date policy information.',
       icon: Zap,
-      color: 'text-cyan-600 dark:text-cyan-400',
-      bgColor: 'bg-cyan-100 dark:bg-cyan-900/30',
+      gradient: 'card-gradient-pink',
+      glow: 'glow-pink',
     },
     {
       title: 'Security Scoring',
       description:
         'Assess your security posture with automated scoring that identifies weak and strong policies in your environment.',
       icon: Target,
-      color: 'text-rose-600 dark:text-rose-400',
-      bgColor: 'bg-rose-100 dark:bg-rose-900/30',
+      gradient: 'card-gradient-mixed',
+      glow: 'glow-purple',
     },
   ];
 
@@ -120,16 +120,16 @@ const LandingPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen gradient-bg">
+    <div className="min-h-screen dark:mesh-gradient bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 dark:from-transparent">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="p-2 bg-blue-600 rounded-lg">
+              <div className="p-2 card-gradient-purple rounded-lg glow-purple animate-pulse-glow">
                 <Shield className="h-5 w-5 text-white" />
               </div>
-              <span className="font-semibold text-gray-900 dark:text-white">
+              <span className="font-semibold gradient-text">
                 CA Analyzer
               </span>
             </div>
@@ -139,16 +139,16 @@ const LandingPage: React.FC = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16">
+      <section className="pt-32 pb-16 hero-gradient">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium mb-6">
-              <Sparkles className="h-4 w-4" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-600 dark:text-purple-300 text-sm font-medium mb-6 animate-float">
+              <Sparkles className="h-4 w-4 text-yellow-500" />
               Microsoft Entra ID Policy Management
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
               Conditional Access{' '}
-              <span className="gradient-text">Analyzer</span>
+              <span className="gradient-text animate-gradient">Analyzer</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
               Visualize, analyze, and manage your Microsoft Entra ID Conditional
@@ -156,42 +156,36 @@ const LandingPage: React.FC = () => {
               capabilities.
             </p>
 
-            <Card className="max-w-3xl mx-auto mb-12" padding="lg">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text">Policy</div>
-                  <div className="text-gray-600 dark:text-gray-400">
-                    Visualization
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400">
-                    Security
-                  </div>
-                  <div className="text-gray-600 dark:text-gray-400">
-                    Analytics
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-                    Compliance
-                  </div>
-                  <div className="text-gray-600 dark:text-gray-400">
-                    Reporting
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto mb-12">
+              <div className="stat-card card-gradient-purple glow-purple">
+                <div className="relative z-10">
+                  <div className="text-3xl font-bold text-white mb-1">Policy</div>
+                  <div className="text-purple-100">Visualization</div>
                 </div>
               </div>
-            </Card>
+              <div className="stat-card card-gradient-green glow-green">
+                <div className="relative z-10">
+                  <div className="text-3xl font-bold text-white mb-1">Security</div>
+                  <div className="text-green-100">Analytics</div>
+                </div>
+              </div>
+              <div className="stat-card card-gradient-blue glow-blue">
+                <div className="relative z-10">
+                  <div className="text-3xl font-bold text-white mb-1">Compliance</div>
+                  <div className="text-blue-100">Reporting</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-white/50 dark:bg-gray-800/50">
+      <section className="py-16 bg-white/50 dark:bg-transparent">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Powerful Features for Policy Management
+              Powerful Features for <span className="gradient-text">Policy Management</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Everything you need to effectively manage and monitor your
@@ -201,19 +195,20 @@ const LandingPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
-              <Card key={index} hover className="card-hover">
-                <div
-                  className={`inline-flex p-3 rounded-xl ${feature.bgColor} mb-4`}
-                >
-                  <feature.icon className={`h-6 w-6 ${feature.color}`} />
+              <div
+                key={index}
+                className={`${feature.gradient} rounded-2xl p-6 text-white card-hover hover:${feature.glow} transition-all duration-300`}
+              >
+                <div className="p-3 bg-white/20 rounded-xl inline-block mb-4">
+                  <feature.icon className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-white/80">
                   {feature.description}
                 </p>
-              </Card>
+              </div>
             ))}
           </div>
         </div>
@@ -323,15 +318,15 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 bg-gray-900 dark:bg-gray-950">
+      <footer className="py-8 bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="p-2 bg-blue-600 rounded-lg">
+            <div className="p-2 card-gradient-purple rounded-lg glow-purple">
               <Shield className="h-4 w-4 text-white" />
             </div>
-            <span className="font-semibold text-white">CA Analyzer</span>
+            <span className="font-semibold gradient-text">CA Analyzer</span>
           </div>
-          <p className="text-gray-400">
+          <p className="text-gray-300">
             Simplifying Microsoft Entra ID policy management
           </p>
           <p className="text-gray-500 text-sm mt-2">

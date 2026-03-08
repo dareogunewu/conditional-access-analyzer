@@ -45,16 +45,16 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-pink-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 dark:mesh-gradient transition-colors">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <header className="sticky top-0 z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-b border-gray-200 dark:border-purple-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-600 rounded-lg">
+              <div className="p-2 card-gradient-purple rounded-lg glow-purple">
                 <Shield className="h-5 w-5 text-white" />
               </div>
-              <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h1 className="text-lg font-semibold gradient-text">
                 CA Analyzer
               </h1>
             </div>
@@ -114,7 +114,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    Conditional Access Policies
+                    Conditional Access <span className="gradient-text">Policies</span>
                   </h2>
                   <p className="text-gray-500 dark:text-gray-400">
                     {filteredPolicies.length} {filteredPolicies.length === 1 ? 'policy' : 'policies'} found

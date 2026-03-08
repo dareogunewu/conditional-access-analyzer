@@ -136,12 +136,14 @@ const PolicyReports: React.FC<PolicyReportsProps> = ({ policies }) => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Policy Reports</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Policy <span className="gradient-text">Reports</span>
+          </h2>
           <p className="text-gray-500 dark:text-gray-400">
             Comprehensive analysis and export capabilities
           </p>
         </div>
-        <Button onClick={exportToCSV} icon={<Download className="h-4 w-4" />}>
+        <Button onClick={exportToCSV} icon={<Download className="h-4 w-4" />} className="card-gradient-purple text-white border-0 glow-purple hover:opacity-90">
           Export CSV
         </Button>
       </div>
@@ -249,7 +251,10 @@ const PolicyReports: React.FC<PolicyReportsProps> = ({ policies }) => {
               </CardHeader>
               <CardContent className="mt-4">
                 <div className="flex items-center gap-6">
-                  <div className="text-4xl font-bold text-green-600 dark:text-green-400">
+                  <div className={`text-5xl font-bold ${
+                    securityReport.riskScore >= 80 ? 'gradient-text-green' :
+                    securityReport.riskScore >= 60 ? 'text-amber-500' : 'text-rose-500'
+                  }`}>
                     {securityReport.riskScore}%
                   </div>
                   <div className="flex-1">

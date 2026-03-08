@@ -24,13 +24,13 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ policy, onView, onEdit, onDelet
   const getStateBadge = (state?: string) => {
     switch (state) {
       case 'enabled':
-        return { variant: 'success' as const, label: 'Enabled', dot: true };
+        return { variant: 'success' as const, label: 'Enabled', dot: true, borderColor: 'border-l-emerald-500', glow: 'hover:shadow-emerald-500/20' };
       case 'disabled':
-        return { variant: 'danger' as const, label: 'Disabled', dot: true };
+        return { variant: 'danger' as const, label: 'Disabled', dot: true, borderColor: 'border-l-rose-500', glow: 'hover:shadow-rose-500/20' };
       case 'enabledForReportingButNotEnforced':
-        return { variant: 'warning' as const, label: 'Report Only', dot: true };
+        return { variant: 'warning' as const, label: 'Report Only', dot: true, borderColor: 'border-l-amber-500', glow: 'hover:shadow-amber-500/20' };
       default:
-        return { variant: 'default' as const, label: 'Unknown', dot: true };
+        return { variant: 'default' as const, label: 'Unknown', dot: true, borderColor: 'border-l-gray-500', glow: 'hover:shadow-gray-500/20' };
     }
   };
 
@@ -80,7 +80,7 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ policy, onView, onEdit, onDelet
   return (
     <Card
       hover
-      className="group transition-all duration-200 animate-fade-in"
+      className={`group transition-all duration-300 animate-fade-in border-l-4 ${stateBadge.borderColor} ${stateBadge.glow} hover:shadow-xl`}
       padding="none"
     >
       <CardContent className="p-5">
@@ -114,7 +114,7 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ policy, onView, onEdit, onDelet
               {conditions.map((condition, index) => (
                 <div
                   key={index}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs text-gray-700 dark:text-gray-300"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border border-purple-200 dark:border-purple-700/50 rounded-md text-xs text-purple-700 dark:text-purple-300"
                 >
                   <condition.icon className="h-3 w-3 text-gray-500 dark:text-gray-400" />
                   <span>
