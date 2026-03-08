@@ -1,223 +1,338 @@
 import React from 'react';
 import LoginButton from './LoginButton';
+import { Card } from './ui';
+import ThemeToggle from './ui/ThemeToggle';
+import {
+  BarChart3,
+  Shield,
+  Search,
+  FileText,
+  Zap,
+  Target,
+  Lock,
+  Building2,
+  CheckCircle2,
+  Sparkles,
+} from 'lucide-react';
 
 const LandingPage: React.FC = () => {
   const features = [
     {
-      title: "Policy Visualization",
-      description: "View all your Conditional Access policies in an intuitive, card-based interface with clear status indicators and condition summaries.",
-      icon: "📊"
+      title: 'Policy Visualization',
+      description:
+        'View all your Conditional Access policies in an intuitive, card-based interface with clear status indicators and condition summaries.',
+      icon: BarChart3,
+      color: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-blue-100 dark:bg-blue-900/30',
     },
     {
-      title: "Security Analytics",
-      description: "Get insights into policy distribution, identify security gaps, and understand your organization's access control posture.",
-      icon: "🔒"
+      title: 'Security Analytics',
+      description:
+        'Get insights into policy distribution, identify security gaps, and understand your organization\'s access control posture.',
+      icon: Shield,
+      color: 'text-green-600 dark:text-green-400',
+      bgColor: 'bg-green-100 dark:bg-green-900/30',
     },
     {
-      title: "Policy Analysis",
-      description: "Analyze policy effectiveness, detect orphaned policies, and identify potential security risks across your environment.",
-      icon: "🔍"
+      title: 'Policy Analysis',
+      description:
+        'Analyze policy effectiveness, detect orphaned policies, and identify potential security risks across your environment.',
+      icon: Search,
+      color: 'text-purple-600 dark:text-purple-400',
+      bgColor: 'bg-purple-100 dark:bg-purple-900/30',
     },
     {
-      title: "Reporting & Export",
-      description: "Generate comprehensive security reports and export policy data to CSV for further analysis and compliance reporting.",
-      icon: "📋"
+      title: 'Reporting & Export',
+      description:
+        'Generate comprehensive security reports and export policy data to CSV for further analysis and compliance reporting.',
+      icon: FileText,
+      color: 'text-amber-600 dark:text-amber-400',
+      bgColor: 'bg-amber-100 dark:bg-amber-900/30',
     },
     {
-      title: "Real-time Data",
-      description: "Direct integration with Microsoft Graph API ensures you're always working with the most up-to-date policy information.",
-      icon: "⚡"
+      title: 'Real-time Data',
+      description:
+        'Direct integration with Microsoft Graph API ensures you\'re always working with the most up-to-date policy information.',
+      icon: Zap,
+      color: 'text-cyan-600 dark:text-cyan-400',
+      bgColor: 'bg-cyan-100 dark:bg-cyan-900/30',
     },
     {
-      title: "Security Scoring",
-      description: "Assess your security posture with automated scoring that identifies weak and strong policies in your environment.",
-      icon: "🛡️"
-    }
+      title: 'Security Scoring',
+      description:
+        'Assess your security posture with automated scoring that identifies weak and strong policies in your environment.',
+      icon: Target,
+      color: 'text-rose-600 dark:text-rose-400',
+      bgColor: 'bg-rose-100 dark:bg-rose-900/30',
+    },
   ];
 
   const benefits = [
-    "Simplify Conditional Access policy management",
-    "Identify security gaps and misconfigurations", 
-    "Streamline compliance reporting",
-    "Reduce administrative overhead",
-    "Improve overall security posture"
+    'Simplify Conditional Access policy management',
+    'Identify security gaps and misconfigurations',
+    'Streamline compliance reporting',
+    'Reduce administrative overhead',
+    'Improve overall security posture',
   ];
 
   const useCases = [
     {
-      title: "Security Administrators",
-      description: "Quickly assess and manage all Conditional Access policies from a centralized dashboard."
+      title: 'Security Administrators',
+      description:
+        'Quickly assess and manage all Conditional Access policies from a centralized dashboard.',
+      icon: Shield,
     },
     {
-      title: "Compliance Teams", 
-      description: "Generate reports and export data for audit and compliance requirements."
+      title: 'Compliance Teams',
+      description:
+        'Generate reports and export data for audit and compliance requirements.',
+      icon: FileText,
     },
     {
-      title: "IT Managers",
-      description: "Get high-level insights into security posture and policy effectiveness."
-    }
+      title: 'IT Managers',
+      description:
+        'Get high-level insights into security posture and policy effectiveness.',
+      icon: Building2,
+    },
+  ];
+
+  const securityFeatures = [
+    {
+      title: 'MSAL Authentication',
+      description: 'Secure OAuth 2.0 with PKCE',
+      icon: Lock,
+    },
+    {
+      title: 'Microsoft Graph',
+      description: 'Direct API integration',
+      icon: Zap,
+    },
+    {
+      title: 'No Data Storage',
+      description: 'Client-side only processing',
+      icon: Shield,
+    },
+    {
+      title: 'Minimal Permissions',
+      description: 'Read-only access required',
+      icon: CheckCircle2,
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Conditional Access Analyzer
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Visualize, analyze, and manage your Microsoft Entra ID Conditional Access policies 
-            with powerful insights and comprehensive reporting capabilities.
-          </p>
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div>
-                <div className="text-3xl font-bold text-blue-600">Policy</div>
-                <div className="text-gray-600">Visualization</div>
+    <div className="min-h-screen gradient-bg">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 glass">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="p-2 bg-blue-600 rounded-lg">
+                <Shield className="h-5 w-5 text-white" />
               </div>
-              <div>
-                <div className="text-3xl font-bold text-green-600">Security</div>
-                <div className="text-gray-600">Analytics</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-purple-600">Compliance</div>
-                <div className="text-gray-600">Reporting</div>
-              </div>
+              <span className="font-semibold text-gray-900 dark:text-white">
+                CA Analyzer
+              </span>
             </div>
+            <ThemeToggle />
           </div>
         </div>
+      </header>
 
-        {/* Features Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Powerful Features for Policy Management
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+      {/* Hero Section */}
+      <section className="pt-32 pb-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium mb-6">
+              <Sparkles className="h-4 w-4" />
+              Microsoft Entra ID Policy Management
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+              Conditional Access{' '}
+              <span className="gradient-text">Analyzer</span>
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+              Visualize, analyze, and manage your Microsoft Entra ID Conditional
+              Access policies with powerful insights and comprehensive reporting
+              capabilities.
+            </p>
+
+            <Card className="max-w-3xl mx-auto mb-12" padding="lg">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text">Policy</div>
+                  <div className="text-gray-600 dark:text-gray-400">
+                    Visualization
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+                    Security
+                  </div>
+                  <div className="text-gray-600 dark:text-gray-400">
+                    Analytics
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                    Compliance
+                  </div>
+                  <div className="text-gray-600 dark:text-gray-400">
+                    Reporting
+                  </div>
+                </div>
               </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 bg-white/50 dark:bg-gray-800/50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Powerful Features for Policy Management
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Everything you need to effectively manage and monitor your
+              Conditional Access policies
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <Card key={index} hover className="card-hover">
+                <div
+                  className={`inline-flex p-3 rounded-xl ${feature.bgColor} mb-4`}
+                >
+                  <feature.icon className={`h-6 w-6 ${feature.color}`} />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {feature.description}
+                </p>
+              </Card>
             ))}
           </div>
         </div>
+      </section>
 
-        {/* Benefits Section */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-16">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
-            Why Choose Conditional Access Analyzer?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Key Benefits</h3>
-              <ul className="space-y-3">
-                {benefits.map((benefit, index) => (
-                  <li key={index} className="flex items-center">
-                    <span className="text-green-500 mr-3">✓</span>
-                    <span className="text-gray-700">{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Perfect For</h3>
-              <div className="space-y-4">
-                {useCases.map((useCase, index) => (
-                  <div key={index}>
-                    <h4 className="font-medium text-gray-900">{useCase.title}</h4>
-                    <p className="text-sm text-gray-600">{useCase.description}</p>
-                  </div>
-                ))}
+      {/* Benefits Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <Card padding="lg" className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                  Why Choose Conditional Access Analyzer?
+                </h2>
+                <ul className="space-y-4">
+                  {benefits.map((benefit, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700 dark:text-gray-300">
+                        {benefit}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                  Perfect For
+                </h3>
+                <div className="space-y-6">
+                  {useCases.map((useCase, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                        <useCase.icon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-gray-900 dark:text-white">
+                          {useCase.title}
+                        </h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          {useCase.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
+      </section>
 
-        {/* Demo Section */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-16">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
-            See It In Action
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Comprehensive Dashboard
+      {/* Security Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <Card
+            className="max-w-5xl mx-auto bg-gradient-to-r from-blue-600 to-indigo-700 border-0"
+            padding="lg"
+          >
+            <h2 className="text-2xl font-bold text-white text-center mb-8">
+              Enterprise-Grade Security
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {securityFeatures.map((feature, index) => (
+                <div key={index} className="text-center">
+                  <div className="inline-flex p-3 bg-white/10 rounded-xl mb-3">
+                    <feature.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-white mb-1">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-blue-100">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Ready to Analyze Your Policies?
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-8">
+              Sign in with your Microsoft account to start visualizing and
+              analyzing your Conditional Access policies. No installation
+              required.
+            </p>
+
+            <Card className="max-w-md mx-auto" padding="lg">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                Get Started Now
               </h3>
-              <ul className="space-y-2 text-gray-600">
-                <li>• Interactive policy cards with status indicators</li>
-                <li>• Real-time policy state visualization</li>
-                <li>• Advanced filtering and search capabilities</li>
-                <li>• Policy condition and control analysis</li>
-              </ul>
-            </div>
-            <div className="bg-gray-100 rounded-lg p-8 text-center">
-              <div className="text-6xl mb-4">📱</div>
-              <p className="text-gray-600">Dashboard Preview</p>
-              <p className="text-sm text-gray-500">Sign in to see your policies visualized</p>
-            </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Connect securely with Microsoft Entra ID to access your policies.
+              </p>
+              <LoginButton />
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-4">
+                Requires Policy.Read.All permissions
+              </p>
+            </Card>
           </div>
         </div>
-
-        {/* Security Features */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg shadow-lg p-8 text-white mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8">
-            Enterprise-Grade Security
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-            <div>
-              <div className="text-3xl mb-2">🔐</div>
-              <h3 className="font-semibold mb-2">MSAL Authentication</h3>
-              <p className="text-blue-100 text-sm">Secure OAuth 2.0 with PKCE</p>
-            </div>
-            <div>
-              <div className="text-3xl mb-2">🛡️</div>
-              <h3 className="font-semibold mb-2">Microsoft Graph</h3>
-              <p className="text-blue-100 text-sm">Direct API integration</p>
-            </div>
-            <div>
-              <div className="text-3xl mb-2">🔒</div>
-              <h3 className="font-semibold mb-2">No Data Storage</h3>
-              <p className="text-blue-100 text-sm">Client-side only processing</p>
-            </div>
-            <div>
-              <div className="text-3xl mb-2">✅</div>
-              <h3 className="font-semibold mb-2">Minimal Permissions</h3>
-              <p className="text-blue-100 text-sm">Read-only access required</p>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">
-            Ready to Analyze Your Policies?
-          </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Sign in with your Microsoft account to start visualizing and analyzing your 
-            Conditional Access policies. No installation required.
-          </p>
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md mx-auto">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">
-              Get Started Now
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Connect securely with Microsoft Entra ID to access your policies.
-            </p>
-            <LoginButton />
-            <p className="text-xs text-gray-500 mt-4">
-              Requires Policy.Read.All permissions
-            </p>
-          </div>
-        </div>
-      </div>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
+      <footer className="py-8 bg-gray-900 dark:bg-gray-950">
         <div className="container mx-auto px-4 text-center">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="p-2 bg-blue-600 rounded-lg">
+              <Shield className="h-4 w-4 text-white" />
+            </div>
+            <span className="font-semibold text-white">CA Analyzer</span>
+          </div>
           <p className="text-gray-400">
-            Conditional Access Analyzer - Simplifying Microsoft Entra ID policy management
+            Simplifying Microsoft Entra ID policy management
           </p>
           <p className="text-gray-500 text-sm mt-2">
             Built with Next.js, TypeScript, and Microsoft Graph API

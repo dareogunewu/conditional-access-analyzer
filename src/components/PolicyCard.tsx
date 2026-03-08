@@ -1,101 +1,210 @@
 import React from 'react';
 import { ConditionalAccessPolicy } from '../types/conditionalAccess';
+import { Card, CardContent, Badge, Button } from './ui';
+import { formatDate, formatRelativeTime } from '../lib/utils';
+import {
+  Users,
+  AppWindow,
+  MapPin,
+  Calendar,
+  Clock,
+  Edit2,
+  Trash2,
+  Eye,
+} from 'lucide-react';
 
 interface PolicyCardProps {
   policy: ConditionalAccessPolicy;
+  onView?: (policy: ConditionalAccessPolicy) => void;
   onEdit?: (policy: ConditionalAccessPolicy) => void;
   onDelete?: (id: string) => void;
 }
 
-const PolicyCard: React.FC<PolicyCardProps> = ({ policy, onEdit, onDelete }) => {
-  const getStateColor = (state?: string) => {
+const PolicyCard: React.FC<PolicyCardProps> = ({ policy, onView, onEdit, onDelete }) => {
+  const getStateBadge = (state?: string) => {
     switch (state) {
       case 'enabled':
-        return 'bg-green-100 text-green-800';
+        return { variant: 'success' as const, label: 'Enabled', dot: true };
       case 'disabled':
-        return 'bg-red-100 text-red-800';
+        return { variant: 'danger' as const, label: 'Disabled', dot: true };
       case 'enabledForReportingButNotEnforced':
-        return 'bg-yellow-100 text-yellow-800';
+        return { variant: 'warning' as const, label: 'Report Only', dot: true };
       default:
-        return 'bg-gray-100 text-gray-800';
+        return { variant: 'default' as const, label: 'Unknown', dot: true };
     }
   };
 
-  const formatConditions = () => {
-    const conditions = [];
-    if (policy.conditions?.users?.includeUsers?.length) {
-      conditions.push(`${policy.conditions.users.includeUsers.length} users`);
+  const getConditionSummary = () => {
+    const conditions: { icon: typeof Users; label: string; count: number }[] = [];
+
+    const userCount =
+      (policy.conditions?.users?.includeUsers?.length || 0) +
+      (policy.conditions?.users?.includeGroups?.length || 0);
+    if (userCount > 0 || policy.conditions?.users?.includeUsers?.includes('All')) {
+      conditions.push({
+        icon: Users,
+        label: 'Users/Groups',
+        count: policy.conditions?.users?.includeUsers?.includes('All')
+          ? -1
+          : userCount,
+      });
     }
-    if (policy.conditions?.users?.includeGroups?.length) {
-      conditions.push(`${policy.conditions.users.includeGroups.length} groups`);
+
+    const appCount = policy.conditions?.applications?.includeApplications?.length || 0;
+    if (appCount > 0 || policy.conditions?.applications?.includeApplications?.includes('All')) {
+      conditions.push({
+        icon: AppWindow,
+        label: 'Applications',
+        count: policy.conditions?.applications?.includeApplications?.includes('All')
+          ? -1
+          : appCount,
+      });
     }
-    if (policy.conditions?.applications?.includeApplications?.length) {
-      conditions.push(`${policy.conditions.applications.includeApplications.length} apps`);
+
+    const locationCount = policy.conditions?.locations?.includeLocations?.length || 0;
+    if (locationCount > 0) {
+      conditions.push({ icon: MapPin, label: 'Locations', count: locationCount });
     }
-    return conditions.join(', ') || 'No conditions';
+
+    return conditions;
   };
+
+  const getGrantControls = () => {
+    return policy.grantControls?.builtInControls || [];
+  };
+
+  const stateBadge = getStateBadge(policy.state);
+  const conditions = getConditionSummary();
+  const grantControls = getGrantControls();
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 truncate">
-          {policy.displayName || 'Unnamed Policy'}
-        </h3>
-        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStateColor(policy.state)}`}>
-          {policy.state}
-        </span>
-      </div>
-      
-      <div className="space-y-3">
-        <div>
-          <p className="text-sm font-medium text-gray-700">Conditions:</p>
-          <p className="text-sm text-gray-600">{formatConditions()}</p>
+    <Card
+      hover
+      className="group transition-all duration-200 animate-fade-in"
+      padding="none"
+    >
+      <CardContent className="p-5">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base font-semibold text-gray-900 dark:text-white truncate mb-1">
+              {policy.displayName || 'Unnamed Policy'}
+            </h3>
+            <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+              <Clock className="h-3 w-3" />
+              <span>Modified {formatRelativeTime(policy.modifiedDateTime)}</span>
+            </div>
+          </div>
+          <Badge
+            variant={stateBadge.variant}
+            dot={stateBadge.dot}
+            size="sm"
+          >
+            {stateBadge.label}
+          </Badge>
         </div>
-        
-        {policy.grantControls?.builtInControls?.length && (
-          <div>
-            <p className="text-sm font-medium text-gray-700">Grant Controls:</p>
-            <div className="flex flex-wrap gap-1 mt-1">
-              {policy.grantControls.builtInControls.map((control, index) => (
-                <span
+
+        {/* Conditions Summary */}
+        {conditions.length > 0 && (
+          <div className="mb-4">
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+              Applies to
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {conditions.map((condition, index) => (
+                <div
                   key={index}
-                  className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs text-gray-700 dark:text-gray-300"
                 >
-                  {control}
-                </span>
+                  <condition.icon className="h-3 w-3 text-gray-500 dark:text-gray-400" />
+                  <span>
+                    {condition.count === -1 ? 'All' : condition.count} {condition.label}
+                  </span>
+                </div>
               ))}
             </div>
           </div>
         )}
-        
-        <div className="text-xs text-gray-500">
-          <p>Created: {policy.createdDateTime ? new Date(policy.createdDateTime).toLocaleDateString() : 'Unknown'}</p>
-          <p>Modified: {policy.modifiedDateTime ? new Date(policy.modifiedDateTime).toLocaleDateString() : 'Unknown'}</p>
+
+        {/* Grant Controls */}
+        {grantControls.length > 0 && (
+          <div className="mb-4">
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+              Requires
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {grantControls.map((control, index) => (
+                <Badge key={index} variant="info" size="sm">
+                  {formatControlName(control)}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Dates */}
+        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-700">
+          <div className="flex items-center gap-1">
+            <Calendar className="h-3 w-3" />
+            <span>Created {formatDate(policy.createdDateTime)}</span>
+          </div>
         </div>
-      </div>
-      
-      {(onEdit || onDelete) && (
-        <div className="mt-4 pt-4 border-t border-gray-200 flex justify-end space-x-2">
-          {onEdit && (
-            <button
-              onClick={() => onEdit(policy)}
-              className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+      </CardContent>
+
+      {/* Actions Footer */}
+      {(onView || onEdit || onDelete) && (
+        <div className="px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between rounded-b-xl">
+          {onView && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onView(policy)}
+              icon={<Eye className="h-4 w-4" />}
             >
-              Edit
-            </button>
+              View Details
+            </Button>
           )}
-          {onDelete && (
-            <button
-              onClick={() => onDelete(policy.id!)}
-              className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
-            >
-              Delete
-            </button>
-          )}
+          <div className="flex items-center gap-2 ml-auto">
+            {onEdit && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onEdit(policy)}
+                icon={<Edit2 className="h-4 w-4" />}
+                className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+              >
+                Edit
+              </Button>
+            )}
+            {onDelete && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onDelete(policy.id!)}
+                icon={<Trash2 className="h-4 w-4" />}
+                className="text-gray-600 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
+              >
+                Delete
+              </Button>
+            )}
+          </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
+
+function formatControlName(control: string): string {
+  const controlNames: Record<string, string> = {
+    mfa: 'MFA',
+    compliantDevice: 'Compliant Device',
+    domainJoinedDevice: 'Domain Joined',
+    approvedApplication: 'Approved App',
+    compliantApplication: 'Compliant App',
+    passwordChange: 'Password Change',
+    block: 'Block Access',
+  };
+  return controlNames[control] || control;
+}
 
 export default PolicyCard;
