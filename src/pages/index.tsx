@@ -45,16 +45,22 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-pink-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 dark:mesh-gradient transition-colors">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 aurora-light dark:aurora-bg transition-colors">
+      {/* Animated background blobs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/5 rounded-full blur-3xl" />
+      </div>
+
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-b border-gray-200 dark:border-purple-500/20">
+      <header className="sticky top-0 z-40 glass">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
-              <div className="p-2 card-gradient-purple rounded-lg glow-purple">
+              <div className="p-2.5 gradient-card-purple rounded-xl neon-purple">
                 <Shield className="h-5 w-5 text-white" />
               </div>
-              <h1 className="text-lg font-semibold gradient-text">
+              <h1 className="text-xl font-bold text-gradient">
                 CA Analyzer
               </h1>
             </div>
@@ -66,6 +72,7 @@ export default function Home() {
                 size="sm"
                 loading={loading}
                 icon={<RefreshCw className="h-4 w-4" />}
+                className="border-violet-200 dark:border-violet-500/30 hover:bg-violet-50 dark:hover:bg-violet-500/10"
               >
                 Refresh
               </Button>
@@ -74,6 +81,7 @@ export default function Home() {
                 variant="ghost"
                 size="sm"
                 icon={<LogOut className="h-4 w-4" />}
+                className="text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400"
               >
                 Logout
               </Button>
@@ -83,14 +91,16 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Error Alert */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <div className="mb-6 p-4 glass-card border-rose-200 dark:border-rose-500/30 rounded-2xl flex items-start gap-3">
+            <div className="p-2 bg-rose-100 dark:bg-rose-500/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-rose-500" />
+            </div>
             <div>
-              <p className="font-medium text-red-800 dark:text-red-200">Error</p>
-              <p className="text-sm text-red-600 dark:text-red-300">{error}</p>
+              <p className="font-medium text-rose-800 dark:text-rose-200">Error</p>
+              <p className="text-sm text-rose-600 dark:text-rose-300">{error}</p>
             </div>
           </div>
         )}
@@ -113,10 +123,10 @@ export default function Home() {
               {/* Search & Count */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    Conditional Access <span className="gradient-text">Policies</span>
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                    Conditional Access <span className="text-gradient">Policies</span>
                   </h2>
-                  <p className="text-gray-500 dark:text-gray-400">
+                  <p className="text-slate-500 dark:text-slate-400">
                     {filteredPolicies.length} {filteredPolicies.length === 1 ? 'policy' : 'policies'} found
                   </p>
                 </div>
@@ -153,12 +163,14 @@ export default function Home() {
 
               {/* Empty State */}
               {!loading && filteredPolicies.length === 0 && (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                  <Shield className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                <div className="glass-card text-center py-12 rounded-2xl">
+                  <div className="inline-flex p-4 gradient-card-purple rounded-2xl neon-purple mb-4">
+                    <Shield className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                     No policies found
                   </h3>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                  <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
                     {searchTerm
                       ? `No policies match "${searchTerm}". Try adjusting your search.`
                       : 'No Conditional Access policies were found in your tenant.'}

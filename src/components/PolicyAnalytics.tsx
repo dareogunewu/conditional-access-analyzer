@@ -13,6 +13,7 @@ import {
   AppWindow,
   MapPin,
   Lock,
+  Activity,
 } from 'lucide-react';
 
 interface PolicyAnalyticsProps {
@@ -70,66 +71,77 @@ const PolicyAnalytics: React.FC<PolicyAnalyticsProps> = ({ policies }) => {
       title: 'Total Policies',
       value: analysis.totalPolicies,
       icon: Shield,
-      gradient: 'card-gradient-blue',
-      glow: 'glow-blue',
+      gradient: 'gradient-card-purple',
+      glow: 'neon-purple',
     },
     {
       title: 'Enabled',
       value: analysis.enabledPolicies,
       icon: ShieldCheck,
-      gradient: 'card-gradient-green',
-      glow: 'glow-green',
+      gradient: 'gradient-card-green',
+      glow: 'neon-green',
     },
     {
       title: 'Report Only',
       value: analysis.reportOnlyPolicies,
       icon: ShieldAlert,
-      gradient: 'card-gradient-orange',
-      glow: 'glow-purple',
+      gradient: 'gradient-card-orange',
+      glow: 'neon-orange',
     },
     {
       title: 'Disabled',
       value: analysis.disabledPolicies,
       icon: ShieldX,
-      gradient: 'card-gradient-pink',
-      glow: 'glow-pink',
+      gradient: 'gradient-card-pink',
+      glow: 'neon-pink',
     },
   ];
 
   const securityMetrics = [
-    { label: 'With MFA', value: analysis.withMFA, icon: Lock },
-    { label: 'Compliant Device', value: analysis.withCompliantDevice, icon: ShieldCheck },
-    { label: 'Block Policies', value: analysis.blockPolicies, icon: ShieldX },
+    { label: 'With MFA', value: analysis.withMFA, icon: Lock, color: 'text-violet-500' },
+    { label: 'Compliant Device', value: analysis.withCompliantDevice, icon: ShieldCheck, color: 'text-emerald-500' },
+    { label: 'Block Policies', value: analysis.blockPolicies, icon: ShieldX, color: 'text-rose-500' },
   ];
 
   const conditionMetrics = [
-    { label: 'User Targeting', value: analysis.conditionCounts.users, icon: Users },
-    { label: 'Group Targeting', value: analysis.conditionCounts.groups, icon: Users },
-    { label: 'App Restrictions', value: analysis.conditionCounts.apps, icon: AppWindow },
-    { label: 'Location Rules', value: analysis.conditionCounts.locations, icon: MapPin },
+    { label: 'User Targeting', value: analysis.conditionCounts.users, icon: Users, gradient: 'from-cyan-500 to-blue-500' },
+    { label: 'Group Targeting', value: analysis.conditionCounts.groups, icon: Users, gradient: 'from-violet-500 to-purple-500' },
+    { label: 'App Restrictions', value: analysis.conditionCounts.apps, icon: AppWindow, gradient: 'from-emerald-500 to-teal-500' },
+    { label: 'Location Rules', value: analysis.conditionCounts.locations, icon: MapPin, gradient: 'from-orange-500 to-amber-500' },
   ];
+
+  const scoreRingClass = analysis.securityScore >= 80 ? 'score-ring-green' :
+    analysis.securityScore >= 60 ? 'score-ring-amber' : 'score-ring-red';
+
+  const scoreColor = analysis.securityScore >= 80 ? 'text-emerald-500' :
+    analysis.securityScore >= 60 ? 'text-amber-500' : 'text-rose-500';
+
+  const scoreStroke = analysis.securityScore >= 80 ? '#10b981' :
+    analysis.securityScore >= 60 ? '#f59e0b' : '#ef4444';
 
   return (
     <div className="space-y-6 animate-fade-in">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Policy <span className="gradient-text">Analytics</span>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+            Policy <span className="text-gradient">Analytics</span>
           </h2>
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-slate-500 dark:text-slate-400">
             Overview of your Conditional Access policies
           </p>
         </div>
       </div>
 
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => (
           <div
             key={index}
-            className={`stat-card ${stat.gradient} ${stat.glow} card-hover`}
+            className={`${stat.gradient} rounded-2xl p-6 card-3d`}
           >
             <div className="relative z-10 flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-white/20">
+              <div className="p-3 rounded-xl bg-white/20 backdrop-blur-sm">
                 <stat.icon className="h-6 w-6 text-white" />
               </div>
               <div>
@@ -145,146 +157,147 @@ const PolicyAnalytics: React.FC<PolicyAnalyticsProps> = ({ policies }) => {
         ))}
       </div>
 
+      {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-gray-400" />
+        {/* Policy Distribution */}
+        <div className="glass-card rounded-2xl p-6 hover-lift">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="icon-container">
+              <TrendingUp className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
               Policy Distribution
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="mt-4">
-            {analysis.totalPolicies > 0 ? (
-              <>
-                <StackedProgressBar
-                  segments={[
-                    { value: analysis.enabledPolicies, color: 'success', label: 'Enabled' },
-                    { value: analysis.reportOnlyPolicies, color: 'warning', label: 'Report Only' },
-                    { value: analysis.disabledPolicies, color: 'danger', label: 'Disabled' },
-                  ]}
-                  size="lg"
-                  showLegend
-                />
-                <div className="mt-6 grid grid-cols-3 gap-4 text-center">
-                  <div>
-                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">
-                      {percentage(analysis.enabledPolicies, analysis.totalPolicies)}%
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Enforcing</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
-                      {percentage(analysis.reportOnlyPolicies, analysis.totalPolicies)}%
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Monitoring</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-red-600 dark:text-red-400">
-                      {percentage(analysis.disabledPolicies, analysis.totalPolicies)}%
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Inactive</p>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                No policies to display
-              </div>
-            )}
-          </CardContent>
-        </Card>
+            </h3>
+          </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-gray-400" />
-              Security Score
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="mt-4">
-            <div className="flex items-center justify-center mb-6">
-              <div className="relative">
-                <svg className="w-32 h-32 transform -rotate-90">
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="12"
-                    fill="none"
-                    className="text-gray-200 dark:text-gray-700"
-                  />
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="12"
-                    fill="none"
-                    strokeDasharray={`${analysis.securityScore * 3.52} 352`}
-                    strokeLinecap="round"
-                    className={getScoreColor(analysis.securityScore)}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className={`text-3xl font-bold ${getScoreTextColor(analysis.securityScore)}`}>
-                    {analysis.securityScore}
-                  </span>
+          {analysis.totalPolicies > 0 ? (
+            <>
+              <StackedProgressBar
+                segments={[
+                  { value: analysis.enabledPolicies, color: 'success', label: 'Enabled' },
+                  { value: analysis.reportOnlyPolicies, color: 'warning', label: 'Report Only' },
+                  { value: analysis.disabledPolicies, color: 'danger', label: 'Disabled' },
+                ]}
+                size="lg"
+                showLegend
+              />
+              <div className="mt-6 grid grid-cols-3 gap-4 text-center">
+                <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-500/10">
+                  <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                    {percentage(analysis.enabledPolicies, analysis.totalPolicies)}%
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Enforcing</p>
                 </div>
+                <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-500/10">
+                  <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                    {percentage(analysis.reportOnlyPolicies, analysis.totalPolicies)}%
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Monitoring</p>
+                </div>
+                <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-500/10">
+                  <p className="text-2xl font-bold text-rose-600 dark:text-rose-400">
+                    {percentage(analysis.disabledPolicies, analysis.totalPolicies)}%
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Inactive</p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+              No policies to display
+            </div>
+          )}
+        </div>
+
+        {/* Security Score */}
+        <div className="glass-card rounded-2xl p-6 hover-lift">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="icon-container">
+              <Activity className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Security Score
+            </h3>
+          </div>
+
+          <div className="flex items-center justify-center mb-6">
+            <div className="relative">
+              <svg className={`w-36 h-36 transform -rotate-90 ${scoreRingClass}`}>
+                <circle
+                  cx="72"
+                  cy="72"
+                  r="60"
+                  stroke="currentColor"
+                  strokeWidth="12"
+                  fill="none"
+                  className="text-slate-200 dark:text-slate-700"
+                />
+                <circle
+                  cx="72"
+                  cy="72"
+                  r="60"
+                  stroke={scoreStroke}
+                  strokeWidth="12"
+                  fill="none"
+                  strokeDasharray={`${analysis.securityScore * 3.77} 377`}
+                  strokeLinecap="round"
+                  className="transition-all duration-1000"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className={`text-4xl font-bold ${scoreColor}`}>
+                  {analysis.securityScore}
+                </span>
               </div>
             </div>
-            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-4">
-              {getScoreLabel(analysis.securityScore)}
-            </p>
-            <div className="grid grid-cols-3 gap-2">
-              {securityMetrics.map((metric, index) => (
-                <div key={index} className="text-center p-3 bg-gradient-to-br from-purple-500/10 to-pink-500/10 dark:from-purple-500/20 dark:to-pink-500/20 rounded-lg border border-purple-200 dark:border-purple-500/30">
-                  <metric.icon className="h-4 w-4 mx-auto mb-1 text-purple-500" />
-                  <p className="text-lg font-semibold gradient-text">
+          </div>
+
+          <p className="text-center text-sm text-slate-500 dark:text-slate-400 mb-6">
+            {getScoreLabel(analysis.securityScore)}
+          </p>
+
+          <div className="grid grid-cols-3 gap-3">
+            {securityMetrics.map((metric, index) => (
+              <div key={index} className="stat-card-premium text-center p-4">
+                <div className="relative z-10">
+                  <metric.icon className={`h-5 w-5 mx-auto mb-2 ${metric.color}`} />
+                  <p className="text-xl font-bold text-slate-900 dark:text-white">
                     {metric.value}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{metric.label}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{metric.label}</p>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Condition Usage</CardTitle>
-        </CardHeader>
-        <CardContent className="mt-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {conditionMetrics.map((metric, index) => {
-              const colors = [
-                { bg: 'from-cyan-500/10 to-blue-500/10', border: 'border-cyan-200 dark:border-cyan-500/30', icon: 'text-cyan-500', text: 'gradient-text-blue' },
-                { bg: 'from-purple-500/10 to-pink-500/10', border: 'border-purple-200 dark:border-purple-500/30', icon: 'text-purple-500', text: 'gradient-text' },
-                { bg: 'from-emerald-500/10 to-teal-500/10', border: 'border-emerald-200 dark:border-emerald-500/30', icon: 'text-emerald-500', text: 'gradient-text-green' },
-                { bg: 'from-orange-500/10 to-amber-500/10', border: 'border-orange-200 dark:border-orange-500/30', icon: 'text-orange-500', text: 'gradient-text' },
-              ];
-              const color = colors[index % colors.length];
-              return (
-                <div
-                  key={index}
-                  className={`flex items-center gap-3 p-4 bg-gradient-to-br ${color.bg} dark:${color.bg.replace('/10', '/20')} rounded-xl border ${color.border} card-hover`}
-                >
-                  <div className="p-2 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-                    <metric.icon className={`h-5 w-5 ${color.icon}`} />
-                  </div>
-                  <div>
-                    <p className={`text-xl font-bold ${color.text}`}>
-                      {metric.value}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{metric.label}</p>
-                  </div>
+      {/* Condition Usage */}
+      <div className="glass-card rounded-2xl p-6 hover-lift">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
+          Condition Usage
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {conditionMetrics.map((metric, index) => (
+            <div
+              key={index}
+              className="relative overflow-hidden rounded-xl p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover-lift"
+            >
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-lg bg-gradient-to-br ${metric.gradient}`}>
+                  <metric.icon className="h-5 w-5 text-white" />
                 </div>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
+                <div>
+                  <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                    {metric.value}
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{metric.label}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -313,18 +326,6 @@ function calculateSecurityScore(policies: ConditionalAccessPolicy[]): number {
   score += (withLocation / Math.max(enabledPolicies.length, 1)) * 10;
 
   return Math.round(Math.min(score, 100));
-}
-
-function getScoreColor(score: number): string {
-  if (score >= 80) return 'text-green-500';
-  if (score >= 60) return 'text-amber-500';
-  return 'text-red-500';
-}
-
-function getScoreTextColor(score: number): string {
-  if (score >= 80) return 'text-green-600 dark:text-green-400';
-  if (score >= 60) return 'text-amber-600 dark:text-amber-400';
-  return 'text-red-600 dark:text-red-400';
 }
 
 function getScoreLabel(score: number): string {
